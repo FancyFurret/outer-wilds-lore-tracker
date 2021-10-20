@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{25529EF1-A96F-46FD-9038-3DC36040A63B}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>TextRememberer</RootNamespace>
+        <AssemblyName>TextRememberer</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net35\0Harmony.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="NAudio-Unity, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\NAudio-Unity.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.Common, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.Common.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.Logging, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.Logging.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.ModHelper, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.ModHelper.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.ModHelper.Assets, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.ModHelper.Assets.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.ModHelper.Events, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.ModHelper.Events.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.ModHelper.Input, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.ModHelper.Input.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.ModHelper.Interaction, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.ModHelper.Interaction.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.ModHelper.Menus, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.ModHelper.Menus.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="OWML.Utils, Version=1.1.8.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.Utils.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(GameDir)\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameDir)\OuterWilds_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameDir)\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameDir)\OuterWilds_Data\Managed\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameDir)\OuterWilds_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameDir)\OuterWilds_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Extensions\DialogueNodeExtensions.cs" />
+        <Compile Include="Extensions\DialogueOptionExtensions.cs" />
+        <Compile Include="Extensions\NomaiTextExtensions.cs" />
+        <Compile Include="Extensions\StringExtensions.cs" />
+        <Compile Include="MonoBehaviours\DetailMaskColorUpdater.cs" />
+        <Compile Include="MonoBehaviours\DialogueRememberer.cs" />
+        <Compile Include="MonoBehaviours\NomaiTextRememberer.cs" />
+        <Compile Include="Patches\CharacterDialogueTreePatches.cs" />
+        <Compile Include="Patches\NomaiTextPatches.cs" />
+        <Compile Include="Patches\ScrollItemPatches.cs" />
+        <Compile Include="TextRemembererMod.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="TextRemembererStorage.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="default-config.json" />
+      <Content Include="manifest.json" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <PropertyGroup>
+        <PostBuildEvent>
+<!--            rmdir /s /q "$(OwmlDir)\Mods\$(ModUniqueName)"-->
+            md "$(OwmlDir)\Mods\$(ModUniqueName)"
+
+            copy /y "$(TargetPath)" "$(OwmlDir)\Mods\$(ModUniqueName)"
+            copy /y "$(ProjectDir)\default-config.json" "$(OwmlDir)\Mods\$(ModUniqueName)"
+            copy /y "$(ProjectDir)\manifest.json" "$(OwmlDir)\Mods\$(ModUniqueName)"
+        </PostBuildEvent>
+    </PropertyGroup>
+</Project>
