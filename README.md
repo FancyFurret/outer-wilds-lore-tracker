@@ -7,6 +7,8 @@ This mod was designed so that you could quickly tell if there is something new t
 purple = new, white = seen. I have tried to make it integrate as seamlessly as possible with the game, so Nomai tech
 changes color (just like wall text does natively), and Hearthian things get a purple exclamation point above them.
 
+![Screenshot](Images/Screenshot.jpg)
+
 ## Supported Lore Types
 
 * Wall text
