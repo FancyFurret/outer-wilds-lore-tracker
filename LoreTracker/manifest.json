@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/manifest_schema.json",
+  "filename": "LoreTracker.dll",
+  "author": "FancyFurret",
+  "name": "LoreTracker",
+  "uniqueName": "FancyFurret.LoreTracker",
+  "version": "0.1.0",
+  "owmlVersion": "2.9.6",
+  "dependencies": [],
+  "pathsToPreserve": [
+  ]
+}
