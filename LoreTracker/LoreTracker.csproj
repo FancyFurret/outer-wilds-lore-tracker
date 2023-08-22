@@ -25,6 +25,9 @@
         </None>
     </ItemGroup>
     <ItemGroup>
+        <Content Include="..\README.md">
+          <Link>README.md</Link>
+        </Content>
         <Content Include="LoreTracker.csproj.user"/>
     </ItemGroup>
 </Project>
