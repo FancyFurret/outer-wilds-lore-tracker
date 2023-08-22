@@ -1,9 +1,0 @@
-{
-  "filename": "TextRememberer.dll",
-  "author": "osum4est",
-  "name": "TextRememberer",
-  "uniqueName": "osum4est.TextRememberer",
-  "description": "Remember all the text",
-  "version": "0.1.0",
-  "owmlVersion": "1.2.4"
-}
