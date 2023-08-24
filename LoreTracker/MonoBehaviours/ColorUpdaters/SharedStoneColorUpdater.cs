@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LoreTracker.Helpers;
 using UnityEngine;
 
 namespace LoreTracker.MonoBehaviours.ColorUpdaters;
@@ -7,11 +8,11 @@ namespace LoreTracker.MonoBehaviours.ColorUpdaters;
 [RequireComponent(typeof(SharedStone))]
 public class SharedStoneColorUpdater : MonoBehaviour, ILateInitializer
 {
-    private static readonly int PropIDEmissionColor = Shader.PropertyToID("_EmissionColor");
+    private readonly MaterialSwapper _materialSwapper = new();
+    private List<NomaiTextTracker> _associatedNomaiTexts = new();
 
-    private readonly List<NomaiTextTracker> _associatedNomaiTexts = new();
 
-    private void Awake()
+    private void Start()
     {
         LateInitializerManager.RegisterLateInitializer(this);
     }
@@ -26,11 +27,24 @@ public class SharedStoneColorUpdater : MonoBehaviour, ILateInitializer
     {
         LateInitializerManager.UnregisterLateInitializer(this);
 
+        _associatedNomaiTexts = FindAssociatedNomaiTexts();
+        GenerateMaterials();
+
+        foreach (var tracker in _associatedNomaiTexts)
+            tracker.OnAllTextRead += UpdateColor;
+
+        UpdateColor();
+    }
+
+    private List<NomaiTextTracker> FindAssociatedNomaiTexts()
+    {
         var sharedStone = GetComponent<SharedStone>();
         var remoteId = sharedStone.GetRemoteCameraID();
+        var associatedNomaiTexts = new List<NomaiTextTracker>();
         var associatedNomaiTextHashes = new HashSet<int>();
 
         foreach (var whiteboard in FindObjectsOfType<NomaiSharedWhiteboard>())
+        {
             for (var i = 0; i < whiteboard._remoteIDs.Length; i++)
             {
                 if (whiteboard._remoteIDs[i] != remoteId) continue;
@@ -40,28 +54,30 @@ public class SharedStoneColorUpdater : MonoBehaviour, ILateInitializer
                 if (associatedNomaiTextHashes.Contains(hash))
                     continue;
 
-                _associatedNomaiTexts.Add(tracker);
+                associatedNomaiTexts.Add(tracker);
                 associatedNomaiTextHashes.Add(hash);
                 break;
             }
+        }
 
-        foreach (var tracker in _associatedNomaiTexts)
-            tracker.OnAllTextRead += UpdateColor;
+        return associatedNomaiTexts;
+    }
 
-        UpdateColor();
+    private void GenerateMaterials()
+    {
+        foreach (var renderer in GetComponentsInChildren<MeshRenderer>())
+        {
+            for (var i = 0; i < renderer.sharedMaterials.Length; i++)
+            {
+                var material = renderer.sharedMaterials[i];
+                _materialSwapper.AddCommonMaterials(renderer, material, i);
+            }
+        }
     }
 
     private void UpdateColor()
     {
-        if (_associatedNomaiTexts.Any(tracker => !tracker.AllTextRead))
-            return;
-
-        foreach (var renderer in GetComponentsInChildren<MeshRenderer>())
-        foreach (var material in renderer.materials)
-            if (material.name.StartsWith("Structure_NOM_BlueGlow_mat"))
-            {
-                material.color = LoreTracker.TranslatedColor;
-                material.SetColor(PropIDEmissionColor, LoreTracker.TranslatedColor);
-            }
+        if (_associatedNomaiTexts.Any(tracker => !tracker.AllTextRead)) return;
+        _materialSwapper.SwapMaterials();
     }
 }

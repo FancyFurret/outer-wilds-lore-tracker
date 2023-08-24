@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LoreTracker.Helpers;
 using UnityEngine;
 
 namespace LoreTracker.MonoBehaviours.ColorUpdaters;
@@ -7,11 +8,10 @@ namespace LoreTracker.MonoBehaviours.ColorUpdaters;
 [RequireComponent(typeof(NomaiSharedWhiteboard))]
 public class NomaiSharedWhiteboardColorUpdater : MonoBehaviour, ILateInitializer
 {
-    private static readonly int PropIDEmissionColor = Shader.PropertyToID("_EmissionColor");
-
+    private readonly MaterialSwapper _materialSwapper = new();
     private readonly List<NomaiTextTracker> _nomaiTexts = new();
 
-    private void Awake()
+    private void Start()
     {
         LateInitializerManager.RegisterLateInitializer(this);
     }
@@ -27,39 +27,36 @@ public class NomaiSharedWhiteboardColorUpdater : MonoBehaviour, ILateInitializer
         LateInitializerManager.UnregisterLateInitializer(this);
 
         var nomaiSharedWhiteboard = GetComponent<NomaiSharedWhiteboard>();
-
         for (var i = 0; i < nomaiSharedWhiteboard._remoteIDs.Length; i++)
         {
             var tracker = nomaiSharedWhiteboard._nomaiTexts[i].GetComponent<NomaiTextTracker>();
             _nomaiTexts.Add(tracker);
         }
+        
+        GenerateMaterials();
 
         foreach (var tracker in _nomaiTexts)
             tracker.OnAllTextRead += UpdateColor;
 
         UpdateColor();
     }
-
-    private void UpdateColor()
+    
+    private void GenerateMaterials()
     {
-        if (_nomaiTexts.Any(tracker => !tracker.AllTextRead))
-            return;
-
         var socket = GetComponentInChildren<SharedStoneSocket>();
         foreach (var renderer in socket.GetComponentsInChildren<Renderer>())
-        foreach (var material in renderer.materials)
         {
-            if (material.name.StartsWith("Structure_NOM_BlueGlow_mat"))
+            for (var i = 0; i < renderer.sharedMaterials.Length; i++)
             {
-                material.color = LoreTracker.TranslatedColor;
-                material.SetColor(PropIDEmissionColor, LoreTracker.TranslatedColor);
-            }
-
-            if (material.name.StartsWith("Decal_NOM_Symbols"))
-            {
-                material.color = LoreTracker.TranslatedColor;
-                material.SetColor(PropIDEmissionColor, LoreTracker.TranslatedColor);
+                var material = renderer.sharedMaterials[i];
+                _materialSwapper.AddCommonMaterials(renderer, material, i);
             }
         }
+    }
+    
+    private void UpdateColor()
+    {
+        if (_nomaiTexts.Any(tracker => !tracker.AllTextRead)) return;
+        _materialSwapper.SwapMaterials();
     }
 }

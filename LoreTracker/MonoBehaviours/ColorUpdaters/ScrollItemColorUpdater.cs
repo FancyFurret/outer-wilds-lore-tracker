@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LoreTracker.Helpers;
+using UnityEngine;
 
 namespace LoreTracker.MonoBehaviours.ColorUpdaters;
 
@@ -9,16 +10,18 @@ public class ScrollItemColorUpdater : MonoBehaviour, ILateInitializer
     private static readonly int PropIDDetail2EmissionColor = Shader.PropertyToID("_Detail2EmissionColor");
     private static readonly int PropIDDetail3EmissionColor = Shader.PropertyToID("_Detail3EmissionColor");
 
+    private readonly MaterialSwapper _materialSwapper = new();
     private NomaiTextTracker _nomaiTextTracker;
 
-    private void Awake()
+    private void Start()
     {
         LateInitializerManager.RegisterLateInitializer(this);
     }
 
     public void OnDestroy()
     {
-        _nomaiTextTracker.OnAllTextRead -= UpdateColor;
+        if (_nomaiTextTracker != null)
+            _nomaiTextTracker.OnAllTextRead -= UpdateColor;
     }
 
     public void LateInitialize()
@@ -26,23 +29,35 @@ public class ScrollItemColorUpdater : MonoBehaviour, ILateInitializer
         LateInitializerManager.UnregisterLateInitializer(this);
 
         _nomaiTextTracker = GetComponentInChildren<NomaiTextTracker>();
+        GenerateMaterials();
+
         _nomaiTextTracker.OnAllTextRead += UpdateColor;
 
         UpdateColor();
     }
 
+    private void GenerateMaterials()
+    {
+        foreach (var renderer in GetComponentsInChildren<MeshRenderer>())
+        {
+            for (var i = 0; i < renderer.sharedMaterials.Length; i++)
+            {
+                var material = renderer.sharedMaterials[i];
+
+                if (material.name.StartsWith("Props_NOM_Scroll_mat"))
+                    _materialSwapper.Add(renderer, material, i, newMat =>
+                    {
+                        newMat.SetColor(PropIDDetail1EmissionColor, LoreTracker.TranslatedColor);
+                        newMat.SetColor(PropIDDetail2EmissionColor, LoreTracker.TranslatedColor);
+                        newMat.SetColor(PropIDDetail3EmissionColor, LoreTracker.TranslatedColor);
+                    });
+            }
+        }
+    }
+
     private void UpdateColor()
     {
-        if (!_nomaiTextTracker.AllTextRead)
-            return;
-
-        foreach (var renderer in GetComponentsInChildren<MeshRenderer>())
-        foreach (var material in renderer.materials)
-            if (material.name.StartsWith("Props_NOM_Scroll_mat"))
-            {
-                material.SetColor(PropIDDetail1EmissionColor, LoreTracker.TranslatedColor);
-                material.SetColor(PropIDDetail2EmissionColor, LoreTracker.TranslatedColor);
-                material.SetColor(PropIDDetail3EmissionColor, LoreTracker.TranslatedColor);
-            }
+        if (!_nomaiTextTracker.AllTextRead) return;
+        _materialSwapper.SwapMaterials();
     }
 }
