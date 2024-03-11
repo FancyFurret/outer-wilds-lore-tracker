@@ -12,17 +12,21 @@ public class LoreTrackerStorageData
 
 public static class LoreTrackerStorage
 {
-    private const string SaveFileName = "LoreTrackerData.json";
+    private const string SaveFileName = "LoreTrackerData.owsave";
+    private const string OldSaveFileName = "LoreTrackerData.json";
 
     private static LoreTrackerStorageData _data;
     private static string CurrentProfile => StandaloneProfileManager.SharedInstance.currentProfile.profileName;
 
     private static string SaveFilePath =>
         Path.Combine(StandaloneProfileManager.SharedInstance._profilesPath, CurrentProfile, SaveFileName);
+    private static string OldSaveFilePath =>
+        Path.Combine(StandaloneProfileManager.SharedInstance._profilesPath, CurrentProfile, OldSaveFileName);
 
     public static void Load()
     {
         _data = JsonHelper.LoadJsonObject<LoreTrackerStorageData>(SaveFilePath)
+                ?? JsonHelper.LoadJsonObject<LoreTrackerStorageData>(OldSaveFilePath)
                 ?? new LoreTrackerStorageData();
         LoreTracker.I.ModHelper.Console.WriteLine("Loaded LoreTracker data", MessageType.Success);
     }
