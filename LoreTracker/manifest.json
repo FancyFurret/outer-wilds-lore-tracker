@@ -4,7 +4,7 @@
   "author": "FancyFurret",
   "name": "LoreTracker",
   "uniqueName": "FancyFurret.LoreTracker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "owmlVersion": "2.9.6",
   "dependencies": [],
   "pathsToPreserve": [
